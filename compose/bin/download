@@ -2,6 +2,7 @@
 
 VERSION=${1:-2.4.5-p1}
 EDITION=${2:-community}
+TOKEN=${3}
 
 bin/stop
 
@@ -17,12 +18,12 @@ fi
 bin/docker-compose --no-dev up -d
 [ $? != 0 ] && echo "Failed to start Docker services" && exit
 
-bin/setup-composer-auth
+#bin/setup-composer-auth
 
 bin/fixowns
 
-if [ $EDITION == "mageos" ]; then
-  bin/clinotty composer create-project --stability alpha --repository-url=https://upstream-nightly.mage-os.org magento/project-community-edition .
+if [ $EDITION == "slideteam" ]; then
+  bin/clinotty git clone https://${TOKEN}:x-oauth-basic@github.com/UdayMohanSlideteam/SlideTeamCE242.git .
 else
   bin/clinotty composer create-project --repository=https://repo.magento.com/ magento/project-"${EDITION}"-edition="${VERSION}" .
 fi
